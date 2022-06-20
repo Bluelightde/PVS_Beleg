@@ -3,6 +3,7 @@ package Beleg;
 import java.awt.*;
 
 public class Model {
+		
 		  View v;
 		  boolean farbe = true;
 		  int threads = 10;

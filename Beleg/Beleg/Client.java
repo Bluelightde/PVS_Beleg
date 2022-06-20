@@ -12,67 +12,38 @@ public class Client {
 	public static void main(String args[]) throws Exception {
 		
 		
-		/*if (args.length < 4) { // Test para correcto # de args
-			throw new IllegalArgumentException("Parameter(s): <HostServer> <ServerPort> <ini> <fin>");
-			/*
-			 * Argumentos: <Num> n?mero de servidores, y para cada uno de ellos: <ServerN>
-			 * <PortN> direcci?n IP y puerto del servidor N-?simo
-			 */
-		// }
-		
-		/*
-		 * TO-DO: lectura de argumentos
-		 */
-
-		// Creo un DatagramSocket para el cliente
-		//DatagramSocket client = new DatagramSocket();
-
-		// Leo los parametros del servidor
-		//String ipserv = args[0];
-		// int servPort = Integer.parseInt(args[1]); hola
-		
-
-		// Leo las coordenadas
-		Presenter p = new Presenter();
-    	View v = new View(p);
-    	Model m = new Model(v);
+		Socket client = new Socket("127.0.0.1",6000);
+	
 		p.setModelAndView(m, v);
-		
+		double cr = p.getCr();
+		double ci = p.getCi();
 	
-		 if (args.length < 4) { // Test para correcto # de args
-				throw new IllegalArgumentException("Parameter(s): <HostServer> <ServerPort> <ini> <fin>");
-			}
+		byte[] coord1 = new byte[8];
+		byte[] coord2 = new byte[8];
 
-			/*
-			 * Argumentos: <Num> n?mero de servidores, y para cada uno de ellos: <ServerN>
-			 * <PortN> direcci?n IP y puerto del servidor N-?simo
-			 */
-			/*String host = args[0];
-			int puerto = Integer.parseInt(args[1]);
-			*/
+		long lng1 = Double.doubleToLongBits(cr);
+		long lng2 = Double.doubleToLongBits(ci);
 
-			Socket client = new Socket("127.0.0.1",6000);
+		for(int i = 0; i < 8; i++) {
+			coord1[i] = (byte)((lng1 >> ((7 - i) * 8)) & 0xff);
+			coord2[i] = (byte)((lng2 >> ((7 - i) * 8)) & 0xff);
+		}
 
-			double d = 65.43;
-			byte[] output = new byte[8];
-			long lng = Double.doubleToLongBits(d);
-			for(int i = 0; i < 8; i++) output[i] = (byte)((lng >> ((7 - i) * 8)) & 0xff);
+		OutputStream out = client.getOutputStream(); 
+		DataOutputStream dos = new DataOutputStream(out);
+	
+		byte[] coord = new byte[16];
+		System.arraycopy(coord1, 0, coord, 0, coord1.length);  
+		System.arraycopy(coord2, 0, coord, 0, coord2.length);
 
+		dos.write(coord, 0, coord.length);
 
-			byte [] coord = new byte [8];
+		client.close();
 			
-			OutputStream out = client.getOutputStream(); 
-			DataOutputStream dos = new DataOutputStream(out);
-	
-		
-			dos.write(coord, 0, coord.length);
-
-			client.close();
-			*/
-		// }
-
 	}
-	
-	
+
 }
+	
+	
+
 
