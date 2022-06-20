@@ -11,8 +11,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import Beleg.Presenter;
-
 public class View {
 		  private Presenter p;
 		  private Panel ap = new Panel();
