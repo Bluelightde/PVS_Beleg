@@ -29,7 +29,7 @@ public class Client {
 
 		// Leo los parametros del servidor
 		//String ipserv = args[0];
-		// int servPort = Integer.parseInt(args[1]);
+		// int servPort = Integer.parseInt(args[1]); hola
 		
 
 		// Leo las coordenadas
