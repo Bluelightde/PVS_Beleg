@@ -39,7 +39,7 @@ class ApfelPresenter implements ActionListener {
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
-    for (int i = 1; i < 2; i++) { // Iterationen bis zum Endpunkt
+    for (int i = 1; i < 2; i++) { // Iterationen bis zum Endpunkt f
       System.out.println(i + " Vergrößerung: " + 2.6 / (xmax - xmin) + " xmin: " + xmin + " xmax: " + xmax);
       m.apfel_bild(xmin, xmax, ymin, ymax);
       double xdim = xmax - xmin;
