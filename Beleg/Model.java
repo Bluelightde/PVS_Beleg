@@ -1,7 +1,9 @@
-class ApfelModel2 {
-		  ApfelView2 v;
+import java.awt.*;
+
+public class Model {
+		  View v;
 		  boolean farbe = true;
-		  int threads = 50;
+		  int threads = 10;
 		  final int max_iter = 5000;
 		  final double max_betrag2 = 35;
 		  int xpix, ypix;
@@ -21,7 +23,7 @@ class ApfelModel2 {
 		    {max_iter, 0, 0, 0}
 		  }; // Der Apfelmann wird schwarz.
 
-		  public ApfelModel2(ApfelView2 v) {
+		  public Model(View v) {
 		    this.v = v;
 		  }
 
@@ -60,7 +62,7 @@ class ApfelModel2 {
 		        th[i].join();
 		      } catch (InterruptedException ignored) {
 		      } // nichts
-		    v.update(bild);
+		    v.update(bild);	// cambiarlo en el Cliente
 		  }
 
 		  // Threads and writing to arrays

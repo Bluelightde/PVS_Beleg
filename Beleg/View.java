@@ -1,12 +1,23 @@
-class ApfelView2 {
-		  private ApfelPresenter2 p;
-		  private ApfelPanel ap = new ApfelPanel();
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+public class View {
+		  private Presenter p;
+		  private Panel ap = new Panel();
 		  public  JTextField tfi;
 		  public  JTextField tfr;
 		  int xpix, ypix;
 		  BufferedImage image;
 
-		  public ApfelView2(ApfelPresenter2 p) {
+		  public View(Presenter p) {
 		    this.p = p;
 		  }
 
@@ -45,7 +56,7 @@ class ApfelView2 {
 		    ap.repaint();
 		  }
 
-		  class ApfelPanel extends JPanel {
+		  class Panel extends JPanel {
 		    public void paintComponent(Graphics g) {
 		      super.paintComponent(g);
 		      g.drawImage(image, 0, 0, null); // see javadoc

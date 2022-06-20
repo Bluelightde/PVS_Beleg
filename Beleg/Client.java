@@ -15,9 +15,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 public class Client {
-	 static ApfelPresenter p = new ApfelPresenter();
-	 static ApfelView v = new ApfelView(p);
-	 static ApfelModel m = new ApfelModel(v);
+	 static Presenter p = new Presenter();
+	 static View v = new View(p);
+	 static Model m = new Model(v);
 	
 	public static void main(String args[]) throws Exception {
 		

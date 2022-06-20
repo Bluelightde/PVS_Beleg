@@ -1,6 +1,8 @@
-class ApfelPresenter implements ActionListener {
-		  protected ApfelModel2 m;
-		  protected ApfelView2 v;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+public class Presenter implements ActionListener {
+		  protected Model m;
+		  protected View v;
 
 		  // I do not understand at all these parameters
 		  double xmin = -1.666, xmax = 1, ymin = -1, ymax = 1; // Parameter des Ausschnitts
@@ -9,7 +11,7 @@ class ApfelPresenter implements ActionListener {
 		  double zoomRate = 1.5;
 		  int xpix = 640, ypix = 480;
 
-		  public void setModelAndView(ApfelModel m, ApfelView v) {
+		  public void setModelAndView(Model m, View v) {
 		    this.m = m;
 		    this.v = v;
 		    v.setDim(xpix, ypix);
