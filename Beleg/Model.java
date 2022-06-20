@@ -1,3 +1,5 @@
+package Beleg;
+
 import java.awt.*;
 
 public class Model {
