@@ -1,4 +1,4 @@
-package Beleg;
+package Beleg.Beleg;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

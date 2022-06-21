@@ -1,4 +1,4 @@
-package Beleg;
+package Beleg.Beleg;
 
 import java.awt.*;
 
