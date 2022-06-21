@@ -7,13 +7,15 @@ import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
-
 public class Server {
 
   private double xmax;
   private double xmin;
   private double ymin;
   private double ymax;
+  private int[][] bildIter; // Matrix der Iterationszahl, t.b.d.
+  int xpix = 640;
+  static int ypix = 480;
   
   public static double toDouble(byte[] bytes) {
     return ByteBuffer.wrap(bytes).getDouble();
@@ -46,20 +48,20 @@ public class Server {
             double ymin = toDouble(d3);
             double ymax = toDouble(d4);
             apfel_bild(xmin,xmax,ymin,ymax);
+
           }
         }
       }
 
        // Erzeuge ein komplettes Bild mittles Threads 
-      void apfel_bild(double xmin, double xmax, double ymin, double ymax) {
-        this.xmin = xmin;
+      static void apfel_bild(double xmin, double xmax, double ymin, double ymax) {
+        /*this.xmin = xmin;
         this.xmax = xmax;
         this.ymin = ymin;
-        this.ymax = ymax;
+        this.ymax = ymax;*/
         
         int threads=10;
         ApfelThread[] th = new ApfelThread[threads];
-        int ypix;
         int b = ypix / threads;
         int s = 0;
         for (int i = 0; i < threads; i++) {
@@ -80,7 +82,7 @@ public class Server {
             th[i].join();
           } catch (InterruptedException ignored) {
           } // nichts
-        // v.update(bild);
+        // v.update(bild); The client will do this
       }
 
       // Threads and writing to arrays
@@ -90,7 +92,7 @@ public class Server {
        
       class ApfelThread extends Thread {
         int y_sta, y_sto;
-
+        // int[][] bildIter; // Matrix der Iterationszahl, t.b.d.
         public ApfelThread(int y_start, int y_stopp) {
           this.y_sta = y_start;
           this.y_sto = y_stopp;
@@ -105,10 +107,10 @@ public class Server {
               c_re = xmin + (xmax - xmin) * x / xpix;
               int iter = calc(c_re, c_im);
               bildIter[x][y] = iter;
-              Color pix = farbwert(iter); // Farbberechnung
+              // Color pix = farbwert(iter);  Farbberechnung. The client will do this
               //if (iter == max_iter) pix = Color.RED; else pix = Color.WHITE;
               // v.image.setRGB(x, y, pix.getRGB()); // rgb
-              bild[x][y] = pix;
+              // bild[x][y] = pix; Client will bild this matrix
             }
           }
         }
@@ -139,9 +141,6 @@ public class Server {
           return iter;
         }
       }
-      */
-
- 
-   
 }
+
 

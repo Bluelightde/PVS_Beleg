@@ -67,16 +67,16 @@ public class Presenter implements ActionListener {
 				OutputStream out = (OutputStream) client.getOutputStream();
 				DataOutputStream dos = new DataOutputStream(out);
 				dos.write(coord, 0, coord.length);
-				System.out.println("long : " +coord.length);
-			  // socket needs to be here
-			  // send xmin, xmax, ymin, ymax to the server
-			  // m.apfel_bild(xmin, xmax, ymin, ymax); // this in the server 
-			  double xdim = xmax - xmin;
-			  double ydim = ymax - ymin;
-			  xmin = cr - xdim / 2 / zoomRate;
-			  xmax = cr + xdim / 2 / zoomRate;
-			  ymin = ci - ydim / 2 / zoomRate;
-			  ymax = ci + ydim / 2 / zoomRate;
+				// get the matrix
+				// calculate the color
+				// update the view
+				
+				double xdim = xmax - xmin;
+				double ydim = ymax - ymin;
+				xmin = cr - xdim / 2 / zoomRate;
+				xmax = cr + xdim / 2 / zoomRate;
+				ymin = ci - ydim / 2 / zoomRate;
+				ymax = ci + ydim / 2 / zoomRate;
 			}
 			client.close();
 		}
@@ -86,17 +86,4 @@ public class Presenter implements ActionListener {
 		    ci = Double.parseDouble( v.tfi.getText() );
 		    notifyAll();
 		}
-
-		 /* public double setCr(){
-			return cr;
-		  }
-		  public double getCr(){
-			return cr;
-		  }
-		  public double setCi(){
-			return ci;
-		  }
-		  public double getCi(){
-			return ci;
-		  }*/
-		}
+	}

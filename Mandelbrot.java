@@ -207,7 +207,7 @@ class ApfelModel {
           Color pix = farbwert(iter); // Farbberechnung
           //if (iter == max_iter) pix = Color.RED; else pix = Color.WHITE;
           // v.image.setRGB(x, y, pix.getRGB()); // rgb
-          bild[x][y] = pix;
+          bild[x][y] = pix; 
         }
       }
     }
