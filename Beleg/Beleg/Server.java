@@ -10,7 +10,6 @@ import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
-
 public class Server {
 
   private double xmax;
@@ -40,7 +39,7 @@ public class Server {
         try (ServerSocket server = new ServerSocket(4000)) {
           Socket clntSock = server.accept(); // Socket connected to the client
           SocketAddress clientAddress = clntSock.getRemoteSocketAddress();
-			    System.out.println("Handling client at " + clientAddress);
+          System.out.println("Handling client at " + clientAddress);
 
           DataInputStream in = new DataInputStream(clntSock.getInputStream());
           int lengthr = 32;
@@ -74,7 +73,7 @@ public class Server {
             }
             byte [] tosend = integersToBytes(send);
             OutputStream out = (OutputStream) clntSock.getOutputStream();
-				    DataOutputStream dos = new DataOutputStream(out);
+            DataOutputStream dos = new DataOutputStream(out);
             dos.write(tosend, 0, tosend.length);
           }
         }
@@ -82,11 +81,11 @@ public class Server {
 
        // Erzeuge ein komplettes Bild mittles Threads 
       static void apfel_bild(double xmin, double xmax, double ymin, double ymax) {
-        /*this.xmin = xmin;
+       /*  this.xmin = xmin;
         this.xmax = xmax;
         this.ymin = ymin;
-        this.ymax = ymax;*/
-        
+        this.ymax = ymax;
+        */
         int threads=10;
         ApfelThread[] th = new ApfelThread[threads];
         int ypix=480;
@@ -172,5 +171,7 @@ public class Server {
         
       }
   }
+
+
 
 
