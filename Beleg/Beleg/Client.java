@@ -14,6 +14,8 @@ public class Client {
 		double cr = p.getCr();
 		double ci = p.getCi();
 
+		System.out.println(cr);
+		
 		byte[] coord1 = new byte[8];
 		byte[] coord2 = new byte[8];
 
@@ -31,7 +33,7 @@ public class Client {
 
 		System.out.println(coord);
 
-		Socket client = new Socket("127.0.0.1", 6000);
+		Socket client = new Socket("127.0.0.1", 4000);
 
 		OutputStream out = client.getOutputStream();
 		DataOutputStream dos = new DataOutputStream(out);
