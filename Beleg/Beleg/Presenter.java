@@ -13,6 +13,7 @@ public class Presenter implements ActionListener {
 		  private double ci = 0.131825904205330;
 		  double zoomRate = 1.5;
 		  int xpix = 640, ypix = 480;
+        public Object actionPerformed;
 
 		  public void setModelAndView(Model m, View v) {
 		    this.m = m;

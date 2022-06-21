@@ -1,4 +1,4 @@
-package Beleg;
+package Beleg.Beleg;
 
 import java.io.DataOutputStream;
 import java.io.OutputStream;
@@ -17,7 +17,7 @@ public class Client {
 		p.setModelAndView(m, v);
 		double cr = p.getCr();
 		double ci = p.getCi();
-	
+
 		byte[] coord1 = new byte[8];
 		byte[] coord2 = new byte[8];
 
@@ -37,7 +37,6 @@ public class Client {
 		System.arraycopy(coord2, 0, coord, 0, coord2.length);
 
 		dos.write(coord, 0, coord.length);
-
 		client.close();
 			
 	}
