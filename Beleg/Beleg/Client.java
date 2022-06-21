@@ -1,16 +1,8 @@
 package Beleg.Beleg;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.OutputStream;
-import java.net.Socket;
-import java.nio.ByteBuffer;
-import java.util.Arrays;
-import java.util.Objects;
-
 public class Client {
 
-	public static byte[] concat(byte[]... arrays) {
+	/*public static byte[] concat(byte[]... arrays) {
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		if (arrays != null) {
 			Arrays.stream(arrays).filter(Objects::nonNull)
@@ -22,20 +14,21 @@ public class Client {
 		byte[] bytes = new byte[8];
 		ByteBuffer.wrap(bytes).putDouble(value);
 		return bytes;
-	}
+	}*/
 	public static void main(String args[]) throws Exception {
 		Presenter p = new Presenter();
 		View v = new View(p);
 		Model m = new Model(v);
 		p.setModelAndView(m, v);
+		p.apfel();
 
-		double cr = p.getCr();
-		double ci = p.getCi();
+		//double cr = p.getCr();
+		//double ci = p.getCi();
 
-		System.out.println("cr "+cr);
-		System.out.println("ci "+ci);
+		//System.out.println("cr "+cr);
+		//System.out.println("ci "+ci);
 		
-		byte[] coord1 = toByteArray(cr);
+		/*byte[] coord1 = toByteArray(cr);
 		byte[] coord2 = toByteArray(ci);
 
 		byte[] coord = new byte[16];
@@ -53,6 +46,7 @@ public class Client {
 		dos.write(coord, 0, coord.length);
 		System.out.println("long" +coord.length);
 		client.close();
+		*/
 
 	}
 
