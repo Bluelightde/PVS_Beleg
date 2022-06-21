@@ -1,4 +1,4 @@
-package Beleg;
+package Beleg.Beleg;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,9 +9,11 @@ public class Presenter implements ActionListener {
 		  // I do not understand at all these parameters
 		  double xmin = -1.666, xmax = 1, ymin = -1, ymax = 1; // Parameter des Ausschnitts
 		  // static double  cr = -0.3735,  ci = 0.655;
-		  public double cr = -0.743643887036151, ci = 0.131825904205330;
+		  private double cr = -0.743643887036151;
+		  private double ci = 0.131825904205330;
 		  double zoomRate = 1.5;
 		  int xpix = 640, ypix = 480;
+        public Object actionPerformed;
 
 		  public void setModelAndView(Model m, View v) {
 		    this.m = m;
@@ -20,13 +22,25 @@ public class Presenter implements ActionListener {
 		    m.setParameter(xpix, ypix);
 		  }
 
-		  
-		  
+		
 		  // I think this is the first thing to happen
 		  @Override
-		  public synchronized  void actionPerformed(ActionEvent e) {
+		  public synchronized void actionPerformed(ActionEvent e) {
 		    cr = Double.parseDouble( v.tfr.getText() );
 		    ci = Double.parseDouble( v.tfi.getText() );
 		    notifyAll();
+		  }
+
+		  public double setCr(){
+			return this.cr;
+		  }
+		  public double getCr(){
+			return this.cr;
+		  }
+		  public double setCi(){
+			return this.ci;
+		  }
+		  public double getCi(){
+			return this.ci;
 		  }
 		}
