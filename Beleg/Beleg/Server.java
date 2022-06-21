@@ -1,11 +1,15 @@
 package Beleg.Beleg;
+import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
+
 
 public class Server {
 
@@ -13,14 +17,24 @@ public class Server {
   private double xmin;
   private double ymin;
   private double ymax;
-  private int[][] bildIter; // Matrix der Iterationszahl, t.b.d.
-  int xpix = 640;
+  private static int[][] bildIter; // Matrix der Iterationszahl, t.b.d.
+  static int xpix = 640;
   static int ypix = 480;
   
   public static double toDouble(byte[] bytes) {
     return ByteBuffer.wrap(bytes).getDouble();
   }
-
+  static byte[] integersToBytes(int[] values) throws IOException
+  {
+     ByteArrayOutputStream baos = new ByteArrayOutputStream();
+     DataOutputStream dos = new DataOutputStream(baos);
+     for(int i=0; i < values.length; ++i)
+     {
+          dos.writeInt(values[i]);
+     }
+  
+     return baos.toByteArray();
+  } 
   public static void main(String[] args) throws IOException {
 
         try (ServerSocket server = new ServerSocket(4000)) {
@@ -49,6 +63,19 @@ public class Server {
             double ymax = toDouble(d4);
             apfel_bild(xmin,xmax,ymin,ymax);
 
+            int [] send = new int [ypix*xpix];
+            int cont =0;
+            for(int m = 0; m<bildIter.length; m++) {
+              for(int n = 0; n < bildIter[m].length; n++) {
+                      send [cont] = bildIter[m][n]; 
+                      cont++; 
+                  
+              }
+            }
+            byte [] tosend = integersToBytes(send);
+            OutputStream out = (OutputStream) clntSock.getOutputStream();
+				    DataOutputStream dos = new DataOutputStream(out);
+            dos.write(tosend, 0, tosend.length);
           }
         }
       }
@@ -62,6 +89,7 @@ public class Server {
         
         int threads=10;
         ApfelThread[] th = new ApfelThread[threads];
+        int ypix=480;
         int b = ypix / threads;
         int s = 0;
         for (int i = 0; i < threads; i++) {
@@ -92,7 +120,8 @@ public class Server {
        
       class ApfelThread extends Thread {
         int y_sta, y_sto;
-        // int[][] bildIter; // Matrix der Iterationszahl, t.b.d.
+        int[][] bildIter; // Matrix der Iterationszahl, t.b.d.
+        //Color[][] bild;
         public ApfelThread(int y_start, int y_stopp) {
           this.y_sta = y_start;
           this.y_sto = y_stopp;
@@ -140,7 +169,8 @@ public class Server {
           }
           return iter;
         }
+        
       }
-}
+  }
 
 
