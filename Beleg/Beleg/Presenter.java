@@ -22,8 +22,6 @@ public class Presenter implements ActionListener {
 		    m.setParameter(xpix, ypix);
 		  }
 
-		
-		  // I think this is the first thing to happen
 		  @Override
 		  public synchronized void actionPerformed(ActionEvent e) {
 		    cr = Double.parseDouble( v.tfr.getText() );
@@ -32,15 +30,15 @@ public class Presenter implements ActionListener {
 		  }
 
 		  public double setCr(){
-			return this.cr;
+			return cr;
 		  }
 		  public double getCr(){
-			return this.cr;
+			return cr;
 		  }
 		  public double setCi(){
-			return this.ci;
+			return ci;
 		  }
 		  public double getCi(){
-			return this.ci;
+			return ci;
 		  }
 		}

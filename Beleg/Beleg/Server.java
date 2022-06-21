@@ -3,17 +3,37 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketAddress;
+import java.nio.ByteBuffer;
+import java.util.Arrays;
+
 
 public class Server {
-      public static void main(String[] args) throws IOException {
-        System.out.println("hola");
+  
+  public static double toDouble(byte[] bytes) {
+    return ByteBuffer.wrap(bytes).getDouble();
+  }
+
+  public static void main(String[] args) throws IOException {
+
         try (ServerSocket server = new ServerSocket(4000)) {
           Socket clntSock = server.accept(); // Socket connected to the client
-          DataInputStream inputS = new DataInputStream(clntSock.getInputStream());
+          SocketAddress clientAddress = clntSock.getRemoteSocketAddress();
+			    System.out.println("Handling client at " + clientAddress);
 
-          int receive = inputS.read();
-          //System.out.println(inputS + " " + receive);
-          System.out.println(receive);
+          DataInputStream in = new DataInputStream(clntSock.getInputStream());
+          int lengthr = 16;
+          byte[] message = new byte[lengthr]; // the well known size
+          in.readFully(message);
+
+          byte[] d1 = new byte [8];
+          byte[] d2 = new byte [8];
+          d1 = Arrays.copyOfRange(message, 0, 8);
+          d2 = Arrays.copyOfRange(message, 8, 16);
+          double cr = toDouble(d1);
+          double ci = toDouble(d2);
+          System.out.println("cr "+cr);
+          System.out.println("ci " +ci);
         }
       }
       /* 
@@ -112,6 +132,8 @@ public class Server {
     }
   }
   */
+
+ 
    
 }
 

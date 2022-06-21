@@ -41,7 +41,9 @@ class ApfelPresenter implements ActionListener {
     }
     for (int i = 1; i < 70; i++) { // Iterationen bis zum Endpunkt
       System.out.println(i + " Vergrößerung: " + 2.6 / (xmax - xmin) + " xmin: " + xmin + " xmax: " + xmax);
-      m.apfel_bild(xmin, xmax, ymin, ymax);
+      // socket needs to be here
+      // send xmin, xmax, ymin, ymax to the server
+      m.apfel_bild(xmin, xmax, ymin, ymax); // this in the server 
       double xdim = xmax - xmin;
       double ydim = ymax - ymin;
       xmin = cr - xdim / 2 / zoomRate;
