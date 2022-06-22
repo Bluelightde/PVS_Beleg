@@ -17,9 +17,9 @@ public class Server {
   private static double xmin;
   private static double ymin;
   private static double ymax;
-  private static int[][] bildIter; // Matrix der Iterationszahl, t.b.d.
   static int xpix = 640;
   static int ypix = 480;
+  private static int[][] bildIter = new int [xpix][ypix]; // Matrix der Iterationszahl, t.b.d.
   
   public static double toDouble(byte[] bytes) {
     return ByteBuffer.wrap(bytes).getDouble();
@@ -36,7 +36,7 @@ public class Server {
      return baos.toByteArray();
   } 
   public static void main(String[] args) throws IOException {
-
+        
         try (ServerSocket server = new ServerSocket(4000)) {
           Socket clntSock = server.accept(); // Socket connected to the client
           SocketAddress clientAddress = clntSock.getRemoteSocketAddress();
@@ -62,7 +62,6 @@ public class Server {
             double ymin = toDouble(d3);
             double ymax = toDouble(d4);
             apfel_bild(xmin,xmax,ymin,ymax);
-
             int [] send = new int [ypix*xpix];
             int cont =0;
             for(int m = 0; m<bildIter.length; m++) {
@@ -82,20 +81,15 @@ public class Server {
 
        // Erzeuge ein komplettes Bild mittles Threads 
       static void apfel_bild(double xmin, double xmax, double ymin, double ymax) {
-        
-        /*this.xmin = xmin;
-        this.xmax = xmax;
-        this.ymin = ymin;
-        this.ymax = ymax;*/
-        
-                
+
         int threads=10;
         ApfelThread[] th = new ApfelThread[threads];
         int ypix=480;
         int b = ypix / threads;
         int s = 0;
         for (int i = 0; i < threads; i++) {
-          th[i] = new ApfelThread(s, s + b);
+          // System.out.println("xmin, xmax, ymin, ymax: "+xmin +" " +xmax);
+          th[i] = new ApfelThread(s, s + b, xmin, xmax, ymin, ymax);
           s = s + b;
           th[i].start();
         }
@@ -122,21 +116,30 @@ public class Server {
        
       static class ApfelThread extends Thread {
         int y_sta, y_sto;
-        int[][] bildIter; // Matrix der Iterationszahl, t.b.d.
+        double x_min, x_max, y_min, y_max;
         //Color[][] bild;
-        public ApfelThread(int y_start, int y_stopp) {
+        public ApfelThread(int y_start, int y_stopp, double xmin, double xmax, double ymin, double ymax) {
           this.y_sta = y_start;
           this.y_sto = y_stopp;
+          this.x_min = xmin;
+          this.x_max = xmax;
+          this.y_min = ymin;
+          this.y_max = ymax;
         }
 
         public void run() {
           double c_re, c_im;
+          //System.out.println("ysta, ysto "+y_sta +" " +y_sto);
+          //System.out.println("xpix, ypix " +xpix +" " +ypix);
+          //System.out.println("xmin, xmax, ymin, ymax: "+x_min +" " +x_max);
           for (int y = y_sta; y < y_sto; y++) {
-            c_im = ymin + (xmin - ymin) * y / ypix;
+            c_im = y_min + (x_min - y_min) * y / ypix;
 
             for (int x = 0; x < xpix; x++) {
-              c_re = xmin + (xmax - xmin) * x / xpix;
+              c_re = x_min + (x_max - x_min) * x / xpix;
               int iter = calc(c_re, c_im);
+              System.out.println("iter: "+iter);
+              //System.out.println("xmin, xmax, ymin, ymax: "+xmin +" " +xmax);
               bildIter[x][y] = iter;
               // Color pix = farbwert(iter);  Farbberechnung. The client will do this
               //if (iter == max_iter) pix = Color.RED; else pix = Color.WHITE;
@@ -158,8 +161,8 @@ public class Server {
           //  z_{n+1} = z²_n + c
           //  z²  = x² - y² + i(2xy)
           // |z|² = x² + y²
-          int max_iter=0;
-          double max_betrag2=0;
+          int max_iter=5000;
+          double max_betrag2=35;
           for (iter = 0; iter < max_iter && betrag2 <= max_betrag2; iter++) {
             zr = zr2 - zi2 + cr;
             zi = zri + zri + ci;

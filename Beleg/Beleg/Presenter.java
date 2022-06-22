@@ -3,6 +3,7 @@ package Beleg.Beleg;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -77,7 +78,13 @@ public class Presenter implements ActionListener {
 				xmax = cr + xdim / 2 / zoomRate;
 				ymin = ci - ydim / 2 / zoomRate;
 				ymax = ci + ydim / 2 / zoomRate;
+
+				DataInputStream in = new DataInputStream(client.getInputStream());
+         		int lengthr = 307200;
+          		byte[] message = new byte[lengthr]; // the well known size
+				in.readFully(message);
 			}
+
 			client.close();
 		}
 		  @Override
