@@ -1,5 +1,6 @@
 package Beleg.Beleg;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.ByteArrayOutputStream;
@@ -13,11 +14,11 @@ import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.Objects;
 
-
 public class Presenter implements ActionListener {
 		  Socket client;
 		  protected Model m;
 		  protected View v;
+		 
 
 		  // I do not understand at all these parameters
 		  double xmin = -1.666, xmax = 1, ymin = -1, ymax = 1; // Parameter des Ausschnitts
@@ -26,6 +27,8 @@ public class Presenter implements ActionListener {
 		  private double ci = 0.131825904205330;
 		  double zoomRate = 1.5;
 		  int xpix = 640, ypix = 480;
+		  Color[][] bild= new Color[xpix][ypix];
+
         public Object actionPerformed;
 		
 		public static byte[] concat(byte[]... arrays) {
@@ -40,6 +43,16 @@ public class Presenter implements ActionListener {
 			byte[] bytes = new byte[8];
 			ByteBuffer.wrap(bytes).putDouble(value);
 			return bytes;
+		}
+		public int[] convert(byte buf[]) {
+			int intArr[] = new int[buf.length / 4];
+			int offset = 0;
+			for(int i = 0; i < intArr.length; i++) {
+			   intArr[i] = (buf[3 + offset] & 0xFF) | ((buf[2 + offset] & 0xFF) << 8) |
+						   ((buf[1 + offset] & 0xFF) << 16) | ((buf[0 + offset] & 0xFF) << 24);  
+			offset += 4;
+			}
+			return intArr;
 		}
 		public void setModelAndView(Model m, View v) {
 		    this.m = m;
@@ -83,6 +96,22 @@ public class Presenter implements ActionListener {
          		int lengthr = 307200;
           		byte[] message = new byte[lengthr]; // the well known size
 				in.readFully(message);
+				
+				int cont =0;
+				int [] values = convert(message);
+				for (int m=0; m<ypix; m++){
+					for (int l=0; l<xpix; l++){
+						int actual = values[cont];
+						Color colour = m.farbwert(actual);
+						cont++;
+					}
+				}
+				// hacer el vector 
+				// bucle con el vector y meter estas dos cosas
+				// Color pix = farbwert(iter); // Farbberechnung
+				//if (iter == max_iter) pix = Color.RED; else pix = Color.WHITE;
+				// v.image.setRGB(x, y, pix.getRGB()); // rgb
+				//bild[x][y] = pix; 
 			}
 
 			client.close();
