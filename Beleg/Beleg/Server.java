@@ -13,10 +13,10 @@ import java.util.Arrays;
 
 public class Server {
 
-  private double xmax;
-  private double xmin;
-  private double ymin;
-  private double ymax;
+  private static double xmax;
+  private static double xmin;
+  private static double ymin;
+  private static double ymax;
   private static int[][] bildIter; // Matrix der Iterationszahl, t.b.d.
   static int xpix = 640;
   static int ypix = 480;
@@ -82,11 +82,13 @@ public class Server {
 
        // Erzeuge ein komplettes Bild mittles Threads 
       static void apfel_bild(double xmin, double xmax, double ymin, double ymax) {
+        
         /*this.xmin = xmin;
         this.xmax = xmax;
         this.ymin = ymin;
         this.ymax = ymax;*/
         
+                
         int threads=10;
         ApfelThread[] th = new ApfelThread[threads];
         int ypix=480;
@@ -118,7 +120,7 @@ public class Server {
 
       /** @author jvogt lokale Klasse zum Thread-Handling */
        
-      class ApfelThread extends Thread {
+      static class ApfelThread extends Thread {
         int y_sta, y_sto;
         int[][] bildIter; // Matrix der Iterationszahl, t.b.d.
         //Color[][] bild;
