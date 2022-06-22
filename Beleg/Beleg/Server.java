@@ -65,6 +65,7 @@ public class Server {
 
             int [] send = new int [ypix*xpix];
             int cont =0;
+            
             for(int m = 0; m<bildIter.length; m++) {
               for(int n = 0; n < bildIter[m].length; n++) {
                       send [cont] = bildIter[m][n]; 
@@ -89,7 +90,7 @@ public class Server {
         this.ymax = ymax;*/
         
                 
-        int threads=10;
+        int threads=1;
         ApfelThread[] th = new ApfelThread[threads];
         int ypix=480;
         int b = ypix / threads;
