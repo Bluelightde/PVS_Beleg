@@ -17,10 +17,11 @@ public class Server {
   private static double xmin;
   private static double ymin;
   private static double ymax;
-  private static int[][] bildIter; // Matrix der Iterationszahl, t.b.d.
   static int xpix = 640;
   static int ypix = 480;
-  
+  private static int[][] bildIter = new int[xpix][ypix]; // Matrix der Iterationszahl, t.b.d.
+
+
   public static double toDouble(byte[] bytes) {
     return ByteBuffer.wrap(bytes).getDouble();
   }
@@ -65,7 +66,7 @@ public class Server {
 
             int [] send = new int [ypix*xpix];
             int cont =0;
-            
+            System.out.println(bildIter.length);
             for(int m = 0; m<bildIter.length; m++) {
               for(int n = 0; n < bildIter[m].length; n++) {
                       send [cont] = bildIter[m][n]; 
@@ -138,6 +139,7 @@ public class Server {
             for (int x = 0; x < xpix; x++) {
               c_re = xmin + (xmax - xmin) * x / xpix;
               int iter = calc(c_re, c_im);
+              System.out.println(iter);
               bildIter[x][y] = iter;
               // Color pix = farbwert(iter);  Farbberechnung. The client will do this
               //if (iter == max_iter) pix = Color.RED; else pix = Color.WHITE;
@@ -159,8 +161,8 @@ public class Server {
           //  z_{n+1} = z²_n + c
           //  z²  = x² - y² + i(2xy)
           // |z|² = x² + y²
-          int max_iter=0;
-          double max_betrag2=0;
+          int max_iter=5000;
+          double max_betrag2=35;
           for (iter = 0; iter < max_iter && betrag2 <= max_betrag2; iter++) {
             zr = zr2 - zi2 + cr;
             zi = zri + zri + ci;
