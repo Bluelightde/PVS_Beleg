@@ -13,10 +13,6 @@ import java.util.Arrays;
 
 public class Server {
 
-  private static double xmax;
-  private static double xmin;
-  private static double ymin;
-  private static double ymax;
   static int xpix = 640;
   static int ypix = 480;
   private static int[][] bildIter = new int [xpix][ypix]; // Matrix der Iterationszahl, t.b.d.
@@ -61,26 +57,14 @@ public class Server {
             double xmax = toDouble(d2);
             double ymin = toDouble(d3);
             double ymax = toDouble(d4);
-            apfel_bild(xmin,xmax,ymin,ymax);
-            int [] send = new int [ypix*xpix];
-            int cont =0;
-            for(int m = 0; m<bildIter.length; m++) {
-              for(int n = 0; n < bildIter[m].length; n++) {
-                      send [cont] = bildIter[m][n]; 
-                      cont++; 
-                  
-              }
-            }
-            byte [] tosend = integersToBytes(send);
-            OutputStream out = (OutputStream) clntSock.getOutputStream();
-				    DataOutputStream dos = new DataOutputStream(out);
-            dos.write(tosend, 0, tosend.length);
+            apfel_bild(xmin,xmax,ymin,ymax,clntSock);
+            
           }
         }
       }
 
        // Erzeuge ein komplettes Bild mittles Threads 
-      static void apfel_bild(double xmin, double xmax, double ymin, double ymax) {
+      static void apfel_bild(double xmin, double xmax, double ymin, double ymax, Socket clntSock) throws IOException {
 
         int threads=10;
         ApfelThread[] th = new ApfelThread[threads];
@@ -106,6 +90,23 @@ public class Server {
             th[i].join();
           } catch (InterruptedException ignored) {
           } // nichts
+
+          int [] send = new int [ypix*xpix];
+            int cont =0;
+            // System.out.println("bildIter long: "+bildIter.length);
+            for(int m = 0; m<bildIter.length; m++) {
+              for(int n = 0; n < bildIter[m].length; n++) {
+                      send [cont] = bildIter[m][n]; 
+                      cont++; 
+                  
+              }
+            }
+            System.out.println("int enviados desde el vector del servidor: "+send.length);
+            byte [] tosend = integersToBytes(send);
+            System.out.println("bytes enviados desde el vector del servidor: "+tosend.length);
+            OutputStream out = (OutputStream) clntSock.getOutputStream();
+				    DataOutputStream dos = new DataOutputStream(out);
+            dos.write(tosend, 0, tosend.length);
         // v.update(bild); The client will do this
       }
 
@@ -138,7 +139,7 @@ public class Server {
             for (int x = 0; x < xpix; x++) {
               c_re = x_min + (x_max - x_min) * x / xpix;
               int iter = calc(c_re, c_im);
-              System.out.println("iter: "+iter);
+              //System.out.println("iter: "+iter);
               //System.out.println("xmin, xmax, ymin, ymax: "+xmin +" " +xmax);
               bildIter[x][y] = iter;
               // Color pix = farbwert(iter);  Farbberechnung. The client will do this
@@ -147,6 +148,7 @@ public class Server {
               // bild[x][y] = pix; Client will bild this matrix
             }
           }
+          System.out.println("fuera del bucle");
         }
 
         /**
