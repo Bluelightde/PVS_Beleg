@@ -57,11 +57,6 @@ public class Client {
 		private double ci = 0.131825904205330;
 		double zoomRate = 1.5;
 		int xpix = 640, ypix = 480;
-		Color[][] bild= new Color[xpix][ypix];
-		boolean farbe = true;
-		int threads = 10;
-		final int max_iter = 5000;
-		final double max_betrag2 = 35;
 
 	  public Object actionPerformed;
 	  
@@ -115,9 +110,6 @@ public class Client {
 			  OutputStream out = (OutputStream) client.getOutputStream();
 			  DataOutputStream dos = new DataOutputStream(out);
 			  dos.write(coord, 0, coord.length);
-			  // get the matrix
-			  // calculate the color
-			  // update the view
 			  
 			  double xdim = xmax - xmin;
 			  double ydim = ymax - ymin;
@@ -133,23 +125,7 @@ public class Client {
 			
 			  int [] values = convert(message);
 			  setImage(values);
-			  // v.update(bild);
-			  /*
-			  int cont =0;
-			  for (int m=0; m<ypix; m++){
-				  for (int l=0; l<xpix; l++){
-					  int actual = values[cont];
-					  Color color= m.farbwert(actual);
-					  cont++;
-				  }
-			  }
-			  */
-			  // hacer el vector 
-			  // bucle con el vector y meter estas dos cosas
-			  // Color pix = farbwert(iter); // Farbberechnung
-			  //if (iter == max_iter) pix = Color.RED; else pix = Color.WHITE;
-			  // v.image.setRGB(x, y, pix.getRGB()); // rgb
-			  //bild[x][y] = pix; 
+			  
 		  }
 		  client.close();
 	
@@ -258,18 +234,19 @@ public class Client {
 
 		public void setImage (int []message){
 		  this.message = message;
-		  System.out.println("image length" +message.length);
+		  //System.out.println("image recibida filas" +message.length);
 		  int cont =0;
-		  int y=0;
-			for (int x=0; x<xpix; x++){
-				for (y=0; y<ypix; y++){
+		  // int x=0;
+			for (int y=0; y<ypix; y++){
+				for (int x=0; x<xpix; x++){
 					int actual = message[cont];
 					Color color= farbwert(actual);
 					bild[x][y] = color; 
 					cont++;
 				}
-				y=0;
 			}
+			System.out.println("image representada filas" +bild.length);
+			System.out.println("image representada columnas" +bild[0].length);
 			v.update(bild);
 		}
 		/**

@@ -58,7 +58,7 @@ public class Server {
             double ymin = toDouble(d3);
             double ymax = toDouble(d4);
             apfel_bild(xmin,xmax,ymin,ymax,clntSock);
-            
+            //System.out.println(i + " Vergrößerung: " + 2.6 / (xmax - xmin) + " xmin: " + xmin + " xmax: " + xmax);
           }
         }
       }
@@ -91,22 +91,23 @@ public class Server {
           } catch (InterruptedException ignored) {
           } // nichts
 
-          int [] send = new int [ypix*xpix];
-            int cont =0;
-            // System.out.println("bildIter long: "+bildIter.length);
-            for(int m = 0; m<bildIter.length; m++) {
-              for(int n = 0; n < bildIter[m].length; n++) {
-                      send [cont] = bildIter[m][n]; 
-                      cont++; 
-                  
-              }
+          int [] send = new int [xpix*ypix];
+          int cont =0;
+          System.out.println("bildIter filas: "+bildIter.length);
+          System.out.println("bildIter columnas: "+bildIter[0].length);
+
+          for(int y = 0; y< bildIter[0].length; y++) {
+            for(int x = 0; x < bildIter.length; x++) {
+              send [cont] = bildIter[x][y]; 
+              cont++;     
             }
-            System.out.println("int enviados desde el vector del servidor: "+send.length);
-            byte [] tosend = integersToBytes(send);
-            System.out.println("bytes enviados desde el vector del servidor: "+tosend.length);
-            OutputStream out = (OutputStream) clntSock.getOutputStream();
-				    DataOutputStream dos = new DataOutputStream(out);
-            dos.write(tosend, 0, tosend.length);
+          }
+          System.out.println("int enviados desde el vector del servidor: "+send.length);
+          byte [] tosend = integersToBytes(send);
+          System.out.println("bytes enviados desde el vector del servidor: "+tosend.length);
+          OutputStream out = (OutputStream) clntSock.getOutputStream();
+				  DataOutputStream dos = new DataOutputStream(out);
+          dos.write(tosend, 0, tosend.length);
         // v.update(bild); The client will do this
       }
 
@@ -148,7 +149,7 @@ public class Server {
               // bild[x][y] = pix; Client will bild this matrix
             }
           }
-          System.out.println("fuera del bucle");
+          //System.out.println("fuera del bucle");
         }
 
         /**
