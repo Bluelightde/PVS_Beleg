@@ -20,7 +20,7 @@ class ApfelPresenter implements ActionListener {
   protected ApfelView v;
 
   double xmin = -1.666, xmax = 1, ymin = -1, ymax = 1; // Parameter des Ausschnitts
-  // static double cr = -0.3735, ci = 0.655;
+
   double cr = -0.743643887036151, ci = 0.131825904205330;
   double zoomRate = 1.5;
   int xpix = 640, ypix = 480;
@@ -39,7 +39,7 @@ class ApfelPresenter implements ActionListener {
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
-    for (int i = 1; i < 70; i++) { // Iterationen bis zum Endpunkt
+    for (int i = 1; i < 70; i++) { // Iterationen bis zum Endpunkt f
       System.out.println(i + " Vergrößerung: " + 2.6 / (xmax - xmin) + " xmin: " + xmin + " xmax: " + xmax);
       // socket needs to be here
       // send xmin, xmax, ymin, ymax to the server
