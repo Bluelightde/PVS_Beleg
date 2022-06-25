@@ -4,6 +4,12 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import javax.swing.*;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.lang.reflect.Array;
+import java.util.Arrays;
+
 public class Mandelbrot {
   public static void main(String[] args) {
     ApfelPresenter p = new ApfelPresenter();
@@ -20,7 +26,7 @@ class ApfelPresenter implements ActionListener {
   protected ApfelView v;
 
   double xmin = -1.666, xmax = 1, ymin = -1, ymax = 1; // Parameter des Ausschnitts
-  // static double  cr = -0.3735,  ci = 0.655;
+  // static double cr = -0.3735, ci = 0.655;
   double cr = -0.743643887036151, ci = 0.131825904205330;
   double zoomRate = 1.5;
   int xpix = 640, ypix = 480;
@@ -43,7 +49,7 @@ class ApfelPresenter implements ActionListener {
       System.out.println(i + " Vergrößerung: " + 2.6 / (xmax - xmin) + " xmin: " + xmin + " xmax: " + xmax);
       // socket needs to be here
       // send xmin, xmax, ymin, ymax to the server
-      m.apfel_bild(xmin, xmax, ymin, ymax); // this in the server 
+      m.apfel_bild(xmin, xmax, ymin, ymax); // this in the server
       double xdim = xmax - xmin;
       double ydim = ymax - ymin;
       xmin = cr - xdim / 2 / zoomRate;
@@ -54,9 +60,9 @@ class ApfelPresenter implements ActionListener {
   }
 
   @Override
-  public synchronized  void actionPerformed(ActionEvent e) {
-    cr = Double.parseDouble( v.tfr.getText() );
-    ci = Double.parseDouble( v.tfi.getText() );
+  public synchronized void actionPerformed(ActionEvent e) {
+    cr = Double.parseDouble(v.tfr.getText());
+    ci = Double.parseDouble(v.tfi.getText());
     notifyAll();
   }
 }
@@ -65,8 +71,8 @@ class ApfelPresenter implements ActionListener {
 class ApfelView {
   private ApfelPresenter p;
   private ApfelPanel ap = new ApfelPanel();
-  public  JTextField tfi;
-  public  JTextField tfr;
+  public JTextField tfi;
+  public JTextField tfr;
   int xpix, ypix;
   BufferedImage image;
 
@@ -83,9 +89,9 @@ class ApfelView {
 
   private void initView() {
     JFrame f = new JFrame();
-    JPanel  sp = new JPanel( new FlowLayout());
+    JPanel sp = new JPanel(new FlowLayout());
     JButton sb = new JButton("Start");
-    sb.addActionListener( p);
+    sb.addActionListener(p);
 
     tfr = new JTextField("-0.743643887037151");
     tfi = new JTextField("0.131825904205330");
@@ -93,17 +99,18 @@ class ApfelView {
     sp.add(tfi);
     sp.add(sb);
 
-    //f.setLayout( new BorderLayout() );
+    // f.setLayout( new BorderLayout() );
     f.add(ap, BorderLayout.CENTER);
     f.add(sp, BorderLayout.SOUTH);
-    f.setSize(xpix, ypix+100);
+    f.setSize(xpix, ypix + 100);
     f.setVisible(true);
   }
 
   public void update(Color[][] c) {
     for (int y = 0; y < ypix; y++) {
       for (int x = 0; x < xpix; x++) {
-        if (c[x][y] != null) image.setRGB(x, y, c[x][y].getRGB());
+        if (c[x][y] != null)
+          image.setRGB(x, y, c[x][y].getRGB());
       }
     }
     ap.repaint();
@@ -130,15 +137,15 @@ class ApfelModel {
   Color[][] bild;
 
   final int[][] farben = {
-    {1, 255, 255, 255}, // Hohe Iterationszahlen sollen hell,
-    {30, 10, 255, 40}, //
-    {300, 10, 10, 40}, // die etwas niedrigeren dunkel,
-    {500, 205, 60, 40}, // die "Spiralen" rot
-    {850, 120, 140, 255}, // und die "Arme" hellblau werden.
-    {1000, 50, 30, 255}, // Innen kommt ein dunkleres Blau,
-    {1100, 0, 255, 0}, // dann grelles Grün
-    {1997, 20, 70, 20}, // und ein dunkleres Grün.
-    {max_iter, 0, 0, 0}
+      { 1, 255, 255, 255 }, // Hohe Iterationszahlen sollen hell,
+      { 30, 10, 255, 40 }, //
+      { 300, 10, 10, 40 }, // die etwas niedrigeren dunkel,
+      { 500, 205, 60, 40 }, // die "Spiralen" rot
+      { 850, 120, 140, 255 }, // und die "Arme" hellblau werden.
+      { 1000, 50, 30, 255 }, // Innen kommt ein dunkleres Blau,
+      { 1100, 0, 255, 0 }, // dann grelles Grün
+      { 1997, 20, 70, 20 }, // und ein dunkleres Grün.
+      { max_iter, 0, 0, 0 }
   }; // Der Apfelmann wird schwarz.
 
   public ApfelModel(ApfelView v) {
@@ -175,11 +182,40 @@ class ApfelModel {
       } catch (InterruptedException ignored) {
       } // nichts
     }
-    for (int i = 0; i < threads; i++)
+    for (int i = 0; i < threads; i++) {
       try {
         th[i].join();
       } catch (InterruptedException ignored) {
       } // nichts
+    }
+    int[] send = new int[xpix * ypix];
+    int cont = 0;
+    System.out.println("bildIter filas: " + bildIter.length);
+    System.out.println("bildIter columnas: " + bildIter[0].length);
+
+    for (int y = 0; y < bildIter[0].length; y++) {
+      for (int x = 0; x < bildIter.length; x++) {
+        send[cont] = bildIter[x][y];
+        cont++;
+      }
+    }
+
+    try {
+      String ruta = "filename2.txt";
+      String contenido = Arrays.toString(send);
+      File file = new File(ruta);
+      // Si el archivo no existe es creado
+      if (!file.exists()) {
+        file.createNewFile();
+      }
+      FileWriter fw = new FileWriter(file);
+      BufferedWriter bw = new BufferedWriter(fw);
+      bw.write(contenido);
+      bw.close();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
     v.update(bild);
   }
 
@@ -205,9 +241,9 @@ class ApfelModel {
           int iter = calc(c_re, c_im);
           bildIter[x][y] = iter;
           Color pix = farbwert(iter); // Farbberechnung
-          //if (iter == max_iter) pix = Color.RED; else pix = Color.WHITE;
+          // if (iter == max_iter) pix = Color.RED; else pix = Color.WHITE;
           // v.image.setRGB(x, y, pix.getRGB()); // rgb
-          bild[x][y] = pix; 
+          bild[x][y] = pix;
         }
       }
     }
@@ -220,8 +256,8 @@ class ApfelModel {
     public int calc(double cr, double ci) {
       int iter;
       double zr, zi, zr2 = 0, zi2 = 0, zri = 0, betrag2 = 0;
-      //  z_{n+1} = z²_n + c
-      //  z²  = x² - y² + i(2xy)
+      // z_{n+1} = z²_n + c
+      // z² = x² - y² + i(2xy)
       // |z|² = x² + y²
       for (iter = 0; iter < max_iter && betrag2 <= max_betrag2; iter++) {
         zr = zr2 - zi2 + cr;
@@ -238,12 +274,14 @@ class ApfelModel {
     /**
      * @param iter Iterationszahl
      * @return Farbwert nsmooth = n + 1 - Math.log(Math.log(zn.abs()))/Math.log(2)
-     *     Color.HSBtoRGB(0.95f + 10 * smoothcolor ,0.6f,1.0f);
+     *         Color.HSBtoRGB(0.95f + 10 * smoothcolor ,0.6f,1.0f);
      */
     Color farbwert(int iter) {
       if (!farbe) {
-        if (iter == max_iter) return Color.BLACK;
-        else return Color.RED;
+        if (iter == max_iter)
+          return Color.BLACK;
+        else
+          return Color.RED;
       }
       int[] F = new int[3];
       for (int i = 1; i < farben.length - 1; i++) {
