@@ -1,4 +1,4 @@
-package Beleg.Beleg;
+package Beleg;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

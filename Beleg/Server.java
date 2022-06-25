@@ -1,4 +1,4 @@
-package Beleg.Beleg;
+package Beleg;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
