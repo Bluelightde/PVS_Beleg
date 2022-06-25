@@ -23,27 +23,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-
 public class Client {
-
-	/*
-	 * public static byte[] concat(byte[]... arrays) {
-	 * ByteArrayOutputStream out = new ByteArrayOutputStream();
-	 * if (arrays != null) {
-	 * Arrays.stream(arrays).filter(Objects::nonNull)
-	 * .forEach(array -> out.write(array, 0, array.length));
-	 * }
-	 * return out.toByteArray();
-	 * }
-	 * public static byte[] toByteArray(double value) {
-	 * byte[] bytes = new byte[8];
-	 * ByteBuffer.wrap(bytes).putDouble(value);
-	 * return bytes;
-	 * }
-	 */
 	public static void main(String args[]) throws Exception {
 		Presenter p = new Presenter();
 		View v = new View(p);
@@ -248,9 +228,7 @@ class Model {
 
 	public void setImage(int[] message) {
 		this.message = message;
-		// System.out.println("image recibida filas" +message.length);
 		int cont = 0;
-		// int x=0;
 		for (int y = 0; y < ypix; y++) {
 			for (int x = 0; x < xpix; x++) {
 				int actual = message[cont];
@@ -259,8 +237,6 @@ class Model {
 				cont++;
 			}
 		}
-		System.out.println("image representada filas" + bild.length);
-		System.out.println("image representada columnas" + bild[0].length);
 		v.update(bild);
 	}
 

@@ -4,12 +4,6 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import javax.swing.*;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.lang.reflect.Array;
-import java.util.Arrays;
-
 public class Mandelbrot {
   public static void main(String[] args) {
     ApfelPresenter p = new ApfelPresenter();
@@ -199,23 +193,6 @@ class ApfelModel {
         cont++;
       }
     }
-
-    try {
-      String ruta = "filename2.txt";
-      String contenido = Arrays.toString(send);
-      File file = new File(ruta);
-      // Si el archivo no existe es creado
-      if (!file.exists()) {
-        file.createNewFile();
-      }
-      FileWriter fw = new FileWriter(file);
-      BufferedWriter bw = new BufferedWriter(fw);
-      bw.write(contenido);
-      bw.close();
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-
     v.update(bild);
   }
 
