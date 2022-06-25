@@ -81,7 +81,6 @@ class Presenter implements ActionListener {
 	}
 
 	synchronized void apfel() throws UnknownHostException, IOException {
-		System.out.println("holaaa");
 		try {
 			wait();
 		} catch (InterruptedException e) {
