@@ -10,6 +10,10 @@ import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+
 
 public class Server {
 
@@ -98,13 +102,14 @@ public class Server {
 
           for(int y = 0; y< bildIter[0].length; y++) {
             for(int x = 0; x < bildIter.length; x++) {
-              send [cont] = bildIter[x][y]; 
+              send[cont] = bildIter[x][y]; 
               cont++;     
             }
           }
-          System.out.println("int enviados desde el vector del servidor: "+send.length);
+          //System.out.println("int enviados desde el vector del servidor: "+send);
+          
           byte [] tosend = integersToBytes(send);
-          System.out.println("bytes enviados desde el vector del servidor: "+tosend.length);
+         // System.out.println("bytes enviados desde el vector del servidor: "+tosend.length);
           OutputStream out = (OutputStream) clntSock.getOutputStream();
 				  DataOutputStream dos = new DataOutputStream(out);
           dos.write(tosend, 0, tosend.length);
